@@ -1494,6 +1494,7 @@ async function cerrarSesion() {
   await supabaseClient.auth.signOut();
   document.getElementById('auth-container').style.display = 'block';
 }
+async function cerrarSesion() {
   await supabaseClient.auth.signOut();
   // Al salir, volvemos a mostrar el login y ocultamos el juego
   document.getElementById('auth-container').style.display = 'block';
