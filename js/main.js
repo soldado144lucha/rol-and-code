@@ -1483,8 +1483,7 @@ async function iniciarSesion() {
     mensajeTxt.style.color = "#4aff4a";
     console.log("Sesión iniciada con éxito. Datos del usuario:", data.user);
     
-    // ¡AQUÍ ES DONDE DEBE IR! Guardamos el ID dentro de la función cuando ya sabemos que existe data
-    usuarioLogueadoId = data.user.id; 
+   
     
     document.getElementById('auth-container').style.display = 'none';
   }
