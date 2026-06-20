@@ -1494,30 +1494,38 @@ async function cerrarSesion() {
   await supabaseClient.auth.signOut();
   document.getElementById('auth-container').style.display = 'block';
 }
+// ==========================================
+// SECCIÓN DE AUTENTICACIÓN Y SESIÓN
+// ==========================================
+
 async function cerrarSesion() {
-  await supabaseClient.auth.signOut();
+  if (window.supabaseClient) {
+    await supabaseClient.auth.signOut();
+  } else if (window.supabase) {
+    await supabase.auth.signOut();
+  }
   // Al salir, volvemos a mostrar el login y ocultamos el juego
   document.getElementById('auth-container').style.display = 'block';
-  document.getElementById('game-container').style.display = 'none';
-// ... dentro de tu función iniciarSesion() ...
-if (error) {
-    mensajeTxt.innerText = "❌ Acceso denegado: " + error.message;
-} else {
-    mensajeTxt.innerText = "¡Bienvenido, Héroe!";
-    
-    // Guardamos el ID único que nos devuelve Supabase en nuestra variable global
-    jugadorActualId = data.user.id; 
-    console.log("ID del jugador capturado:", jugadorActualId);
-
-    // Aquí ocultas tu login y muestras el juego
-    document.getElementById('auth-container').style.display = 'none';
+  if (document.getElementById('game-container')) {
+    document.getElementById('game-container').style.display = 'none';
+  }
 }
+
+// ==========================================
+// GUARDADO DE DATOS EN LA BASE DE DATOS
+// ==========================================
+
 async function registrarFinDePartida(nombre, daño, resultadoPartida) {
   // Comprobamos si el jugador está logueado antes de enviar
   if (!jugadorActualId) {
     console.error("No se pueden guardar datos: No hay ningún usuario logueado.");
     return;
   }
+
+  // Aquí puedes poner tu lógica de insert a Supabase si la necesitas
+  console.log("Registrando partida para el jugador:", jugadorActualId);
+} 
+// <-- ¡Esta llave de aquí arriba es la que faltaba y rompía todo el JS!
 
   const { data, error } = await supabaseClient
     .from('historial_partidas') 
