@@ -1,12 +1,6 @@
-// 1. Configurar los credenciales de Supabase
+
 const SUPABASE_URL = "https://pvvvkgfmrlejpabiotiv.supabase.co";
 const SUPABASE_KEY = "sb_publishable_OYUPMdM09_vHPyTBULblsw_eEtjZRmW";
-
-// 2. Crear el cliente global
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Comprobación rápida en consola para ver si se cargó bien
-console.log("Supabase inicializado correctamente:", supabase);
 // Variable global para recordar qué usuario está jugando
 let jugadorActualId = null;
 // ... Aquí continúa el resto de tu código original (const G = { ... })
