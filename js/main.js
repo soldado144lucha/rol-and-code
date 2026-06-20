@@ -1,6 +1,13 @@
 
+// 1. Configurar los credenciales de Supabase
 const SUPABASE_URL = "https://pvvvkgfmrlejpabiotiv.supabase.co";
 const SUPABASE_KEY = "sb_publishable_OYUPMdM09_vHPyTBULblsw_eEtjZRmW";
+
+// 2. Crear el cliente global
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Comprobación rápida en consola para ver si se cargó bien
+console.log("Supabase inicializado correctamente:", supabase);
 // Variable global para recordar qué usuario está jugando
 let jugadorActualId = null;
 // ... Aquí continúa el resto de tu código original (const G = { ... })
@@ -1464,7 +1471,7 @@ async function iniciarSesion() {
 
   // Llamada oficial a Supabase para loguear
   const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email: email,
+   email: email,
     password: password,
   });
 
@@ -1475,28 +1482,23 @@ async function iniciarSesion() {
     mensajeTxt.innerText = "¡Bienvenido, Héroe!";
     mensajeTxt.style.color = "#4aff4a";
     console.log("Sesión iniciada con éxito. Datos del usuario:", data.user);
+    
+    // ¡AQUÍ ES DONDE DEBE IR! Guardamos el ID dentro de la función cuando ya sabemos que existe data
+    usuarioLogueadoId = data.user.id; 
+    
     document.getElementById('auth-container').style.display = 'none';
-    // Aquí podrías ocultar el formulario de login y mostrar tu juego real
-    // Ejemplo: document.getElementById('auth-container').style.display = 'none';
   }
-}// Al loguearse, puedes guardar el ID en una variable global
-let usuarioLogueadoId = data.user.id;
+}
 
-// Y cuando uses el .insert() en tu tabla de historial, añades ese campo:
-insert([
-  { 
-    user_id: usuarioLogueadoId, // Vincula la partida al usuario actual
-    nombre_jugador: nombrePersonaje,
-    daño_infligido: dañoReal,
-    resultado: "Victoria"
-  }
-])
+// El botón de cerrar sesión queda limpio aquí abajo
 async function cerrarSesion() {
+  await supabaseClient.auth.signOut();
+  document.getElementById('auth-container').style.display = 'block';
+}
   await supabaseClient.auth.signOut();
   // Al salir, volvemos a mostrar el login y ocultamos el juego
   document.getElementById('auth-container').style.display = 'block';
   document.getElementById('game-container').style.display = 'none';
-}
 // ... dentro de tu función iniciarSesion() ...
 if (error) {
     mensajeTxt.innerText = "❌ Acceso denegado: " + error.message;
