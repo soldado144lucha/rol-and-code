@@ -1489,13 +1489,8 @@ async function iniciarSesion() {
   }
 }
 
-// El botón de cerrar sesión queda limpio aquí abajo
-async function cerrarSesion() {
-  await supabaseClient.auth.signOut();
-  document.getElementById('auth-container').style.display = 'block';
-}
 // ==========================================
-// SECCIÓN DE AUTENTICACIÓN Y SESIÓN
+// SECCIÓN DE FIN DE ARCHIVO (CORREGIDO)
 // ==========================================
 
 async function cerrarSesion() {
@@ -1504,43 +1499,16 @@ async function cerrarSesion() {
   } else if (window.supabase) {
     await supabase.auth.signOut();
   }
-  // Al salir, volvemos a mostrar el login y ocultamos el juego
   document.getElementById('auth-container').style.display = 'block';
   if (document.getElementById('game-container')) {
     document.getElementById('game-container').style.display = 'none';
   }
 }
 
-// ==========================================
-// GUARDADO DE DATOS EN LA BASE DE DATOS
-// ==========================================
-
 async function registrarFinDePartida(nombre, daño, resultadoPartida) {
-  // Comprobamos si el jugador está logueado antes de enviar
   if (!jugadorActualId) {
     console.error("No se pueden guardar datos: No hay ningún usuario logueado.");
     return;
   }
-
-  // Aquí puedes poner tu lógica de insert a Supabase si la necesitas
   console.log("Registrando partida para el jugador:", jugadorActualId);
-} 
-// <-- ¡Esta llave de aquí arriba es la que faltaba y rompía todo el JS!
-
-  const { data, error } = await supabaseClient
-    .from('historial_partidas') 
-    .insert([
-      { 
-        user_id: jugadorActualId, // <--- ¡La nueva columna mágica!
-        nombre_jugador: nombre, 
-        daño_infligido: daño, 
-        resultado: resultadoPartida 
-      }
-    ]);
-
-  if (error) {
-    console.error("Error al guardar en Supabase:", error.message);
-  } else {
-    console.log("¡Partida vinculada al usuario y guardada con éxito!");
-  }
 }
